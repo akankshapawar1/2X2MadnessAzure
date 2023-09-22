@@ -1,11 +1,11 @@
 export const layout = {
     canvas : {
-        height: "500",
-        width: "500"
+        height: "700",
+        width: "700",
     },
 
     Appmain : {
-        backgroundColor: "#320453",
+        backgroundColor: "#f0f5f3",
         height: "100vh",
         width: "100vw"
     },
@@ -56,8 +56,6 @@ export const layout = {
         position: "absolute",
         left: 600,
         top: 300,
-        color: "yellow",
-        backgroundColor: "#320453",
         width: 200
     }
 
