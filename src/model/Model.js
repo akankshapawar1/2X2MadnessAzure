@@ -1,25 +1,42 @@
 import { config_4x4, config_5x5, config_6x6 } from "./configs";
 
-
-export class Board{
-    constructor(config){
-        this.squares = []
-        this.size = parseInt(config.numColumns)
-        
-        for (let csq of config.baseSquares){
-            //{ "color" : "green", "row": "0", "column" : "0" }
-            let sq = new Square(parseInt(csq.row), parseInt(csq.column), csq.color)
-            this.squares.push(sq)
-        }
-    }
-}
-
 export default class Model{
-    constructor(){
+    constructor(ind){
+        this.configs = [config_4x4, config_5x5, config_6x6]
+        this.flag=0
+        if(ind === undefined){
+            this.currentConfig = 0;
+        }
+        else {
+            this.currentConfig = ind;
+        }
+        this.board = new Board(this.configs[this.currentConfig])
+    }
+
+    /*
+    load_4(){
+        console.log("4")
+        //this.flag=1
+        //this.configs = [config_4x4, config_5x5, config_6x6]
+        //this.currentConfig = 0;
+        this.board = new Board(this.configs[0])
+    }
+
+    load_5(){
+        console.log("5")
+        this.flag=1
+        this.configs = [config_4x4, config_5x5, config_6x6]
+        this.currentConfig = 1;
+        this.board = new Board(this.configs[this.currentConfig])
+    }
+
+    load_6(){
+        console.log("6")
+        this.flag=1
         this.configs = [config_4x4, config_5x5, config_6x6]
         this.currentConfig = 2;
         this.board = new Board(this.configs[this.currentConfig])
-    }
+    }*/
 }
 
 export class Square{
@@ -44,3 +61,17 @@ export class Group{
     }
 }
 
+export class Board{
+    constructor(config){
+        if(config){
+        this.squares = []
+        this.size = parseInt(config.numColumns)
+        
+        for (let csq of config.baseSquares){
+            //{ "color" : "green", "row": "0", "column" : "0" }
+            let sq = new Square(parseInt(csq.row), parseInt(csq.column), csq.color)
+            this.squares.push(sq)
+        }
+    }
+}
+}

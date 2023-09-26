@@ -5,6 +5,10 @@ export default function redrawCanvas(model, canvasObj, appObj){
     // clear the canvas area before rendering
     ctx.clearRect(0,0, canvasObj.width, canvasObj.height);
 
+    //https://stackoverflow.com/a/50233691/11441843
+    //inner circles were visible (6 to 4, 5 to 4)
+    ctx.beginPath();
+
     // Draw the board
     let i = 0;
     //console.log("here")
@@ -35,7 +39,8 @@ export default function redrawCanvas(model, canvasObj, appObj){
         ctx.stroke()
 
         // only draw the circles for inside - https://www.w3schools.com/jsref/canvas_arc.asp
-        if(sq.column * 80 != 0 & sq.row * 80 != 0){
+        //https://stackoverflow.com/a/3736117/11441843
+        if(sq.column * 80 !== 0 & sq.row * 80 !== 0){
             ctx.beginPath();
             ctx.arc(98+sq.column * 80, 198+sq.row * 80, 8, 0, 2 * Math.PI);
             ctx.fillStyle = "white"
@@ -43,15 +48,15 @@ export default function redrawCanvas(model, canvasObj, appObj){
             ctx.stroke();
             ctx.closePath();
         }
-        i++;
-    }
 
-    // this is basically drawing the rectangle underneath the board. Rect color is the border color. Not a good approach.
-    function drawBorder(xPos, yPos, width, height, thickness = 4){
-        ctx.fillStyle= "#184A5C";
-        ctx.fillRect(xPos - (thickness), yPos - (thickness), width + (thickness * 2), height + (thickness * 2));
-    }
-     
+        i++;
+
+        // this is basically drawing the rectangle underneath the board. Rect color is the border color. Not a good approach.
+        /*function drawBorder(xPos, yPos, width, height, thickness = 4){
+            ctx.fillStyle= "#184A5C";
+            ctx.fillRect(xPos - (thickness), yPos - (thickness), width + (thickness * 2), height + (thickness * 2));
+        }*/
+    }   
 
     /*
     //Draw squares
