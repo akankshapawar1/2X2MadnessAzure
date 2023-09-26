@@ -3,12 +3,14 @@ import { layout } from './Layout.js';
 import React from 'react';
 import redrawCanvas from './boundary/Boundary';
 import Model from './model/Model.js';
-import {processClick}  from './controller/Controller.js';
+import {processClick}  from './controller/SelectController.js';
 import { resetHandler } from './controller/ResetController';
 
 // 1. How to display a blank board at the start - Later, is this necessary? - No
 // 2. How to pass configurations selected by the user? setModel? - First - Done
-// 3. How to select a group? - Second
+// 3. How to select a group? - Second - 
+//    i. Red outline
+//    ii. Select only one group at a time. If clicked on another, clear previous.
 // 4. Reset
 
 function App() {

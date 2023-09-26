@@ -27,22 +27,23 @@ export default function redrawCanvas(model, canvasObj, appObj){
         ctx.fillRect(100+sq.column * 80, 200+sq.row * 80, 80, 80);
 
         // draw borders for squares
-        ctx.strokeStyle = '#184A5C'
-        ctx.lineWidth = 4
+        ctx.strokeStyle = 'black'
+        ctx.lineWidth = 2
         ctx.rect(100+sq.column * 80, 200+sq.row * 80, 80, 80)
         ctx.stroke()
 
         // draw red borders when selected
-        ctx.strokeStyle = 'red'
+        /* ctx.strokeStyle = 'red'
         ctx.lineWidth = 4
         ctx.rect(100+sq.column * 80, 200+sq.row * 80, 80, 80)
-        ctx.stroke()
+        ctx.stroke() */
 
         // only draw the circles for inside - https://www.w3schools.com/jsref/canvas_arc.asp
         //https://stackoverflow.com/a/3736117/11441843
-        if(sq.column * 80 !== 0 & sq.row * 80 !== 0){
+        if(sq.column * 80 !== 0 && sq.row * 80 !== 0){
             ctx.beginPath();
-            ctx.arc(98+sq.column * 80, 198+sq.row * 80, 8, 0, 2 * Math.PI);
+            //ctx.arc(98+sq.column * 80, 198+sq.row * 80, 8, 0, 2 * Math.PI);
+            ctx.arc(100+sq.column * 80, 200+sq.row * 80, 8, 0, 2 * Math.PI);
             ctx.fillStyle = "white"
             ctx.fill();
             ctx.stroke();
@@ -52,10 +53,10 @@ export default function redrawCanvas(model, canvasObj, appObj){
         i++;
 
         // this is basically drawing the rectangle underneath the board. Rect color is the border color. Not a good approach.
-        /*function drawBorder(xPos, yPos, width, height, thickness = 4){
+        /* function drawBorder(xPos, yPos, width, height, thickness = 4){
             ctx.fillStyle= "#184A5C";
             ctx.fillRect(xPos - (thickness), yPos - (thickness), width + (thickness * 2), height + (thickness * 2));
-        }*/
+        } */
     }   
 
     /*
