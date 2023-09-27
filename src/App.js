@@ -6,13 +6,15 @@ import Model from './model/Model.js';
 import {processClick}  from './controller/SelectController.js';
 import { resetHandler } from './controller/ResetController';
 
-// 1. How to display a blank board at the start - Later, is this necessary? - No
-// 2. How to pass configurations selected by the user? setModel? - First - Done
-// 3. How to select a group? - Second - 
-//    i. Red outline
-//    ii. Select only one group at a time. If clicked on another, clear previous.
-// 4. Reset
-
+/* 
+1. How to display a blank board at the start - Later, is this necessary? - No
+2. How to pass configurations selected by the user? setModel? - First - Done
+3. How to select a group? - Second - 
+   i. Red outline - Done
+   ii. Select only one group at a time. If clicked on another, clear previous. - Done
+   iii. The red borders get drawn over the circles. Fix it.
+4. Reset - We need to pass indication of which config was selected to the controller? Or we can use currentState?
+ */
 function App() {
 
   // initial instantiation of the model
@@ -41,43 +43,10 @@ function App() {
   }
 
   const resetClick = (e) => {
-    resetHandler(model, canvasRef.current);
+    resetHandler(model, canvasRef.current, appRef.current);
   }
-
-  const loadFirst = (e) => {
-    console.log("loadFirst");
-    /*const model = new Model()
-    const updatedModel = model.load_4();
-    forceRedraw(updatedModel);
-    setModel(updatedModel);*/
-    setModel(new Model(0));
-  }
-
-  const loadSecond = (e) => {
-    console.log("loadSecond");
-    /*const model = new Model()
-    const updatedModel = model.load_5();
-    setModel(updatedModel);*/
-    setModel(new Model(1));
-  }
-
-  const loadThird = (e) => {
-    console.log("loadThird");
-    /*const model = new Model()
-    const updatedModel = model.load_6();
-    setModel(updatedModel);*/
-    setModel(new Model(2));
-  }
-
 
   return (
-    /* Commented main to get the x and y co-ordinates. With main, it displayed - 
-    DOMRect {x: 0, y: 0, width: 700, height: 700, top: 0, …} for every click
-    <main style={layout.Appmain} ref={appRef}
-    now I get - DOMRect {x: 227.5, y: 0, width: 700, height: 700, top: 0, …}
-    fixed it by normailzing points
-    */
-    //<div className="App">
       <main style={layout.Appmain} ref={appRef}>
         <canvas tabIndex="1"
           className="App-canvas"
@@ -92,9 +61,9 @@ function App() {
           <button style={layout.clock}>Clock</button>
           <button style={layout.reset} onClick={resetClick}>Reset</button>
           <button style={layout.quit}>Quit</button>
-          <button style={layout.one} onClick={loadFirst}>4X4</button>
-          <button style={layout.two} onClick={loadSecond}>5X5</button>
-          <button style={layout.three} onClick={loadThird}>6X6</button>
+          <button style={layout.one} onClick={() => setModel(new Model(0))}>4X4</button>
+          <button style={layout.two} onClick={() => setModel(new Model(1))}>5X5</button>
+          <button style={layout.three} onClick={() => setModel(new Model(2))}>6X6</button>
     </div>
     </main>
   );
