@@ -1,10 +1,10 @@
-import rotateHandler from "./RotateController";
+import rotateHandler from "./CounterClockController";
 
 let selectedCircle = null; // Track the currently selected circle
+const groupArr = [] 
 
 export function processClick(model, canvas, x, y){
-    console.log("Do something with "+ x + "," + y)
-    console.log(model)
+    console.log("Inside select controller")
     const ctx = canvas.getContext('2d');
 
     //iterate over the squares to check if the click is inside the inner circle
@@ -49,22 +49,20 @@ export function processClick(model, canvas, x, y){
             const offsets = [
             { dx: -1, dy: -1 },  // upper right
             { dx: -1, dy: 0 },   // upper left
-            { dx: 0, dy: -1 },  // bottom right
             { dx: 0, dy: 0 },   // bottom left
+            { dx: 0, dy: -1 },  // bottom right
             ];
-
+            
             for (const offset of offsets) {
                 const neighborX = squareX + offset.dx;
                 const neighborY = squareY + offset.dy;
                 const neighborColor = sq.color;
 
-                // Find the neighboring square in the model
+                // Find the neighboring square in the model (neighbor contains row, column, color)
                 const neighbor = model.board.squares.find(sq => sq.column === neighborX && sq.row === neighborY);
 
                 if (neighbor) {
-                    //console.log("row "+ neighborY +" column "+ neighborX)
-
-                    rotateHandler(model, neighborY, neighborX);
+                    groupArr.push(neighbor)
 
                     // Update the border color of the neighboring square
                     ctx.strokeStyle = 'red';
@@ -73,6 +71,9 @@ export function processClick(model, canvas, x, y){
                     ctx.stroke();
                 }
             }
+            //console.log(groupArr);
+            //rotateHandler(model, groupArr);
+            return groupArr
         }
     }
 }
@@ -125,8 +126,9 @@ function resetCircleAndGroup(circle,model,canvas){
 
     }
 
-    // Clear the selectedCircle variable
+    // Clear the selectedCircle variable and clear the group array
     selectedCircle = null;
+    groupArr.length=0;
 }
 
 /*
