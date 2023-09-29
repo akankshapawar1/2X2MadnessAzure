@@ -18,7 +18,7 @@ export class Board{
 export default class Model{
     constructor(ind){
         this.configs = [config_4x4, config_5x5, config_6x6]
-        this.flag=0
+        this.numMoves = 0
         if(ind === undefined){
             this.currentConfig = 0;
         }
@@ -26,6 +26,10 @@ export default class Model{
             this.currentConfig = ind;
         }
         this.board = new Board(this.configs[this.currentConfig])
+    }
+
+    updateMoveCount(delta){
+        this.numMoves += delta; 
     }
 
     /*

@@ -1,10 +1,11 @@
 import rotateHandler from "./CounterClockController";
+//import removeColor from "./RemoveGroupController";
 
 let selectedCircle = null; // Track the currently selected circle
 const groupArr = [] 
 
 export function processClick(model, canvas, x, y){
-    console.log("Inside select controller")
+    //console.log("Inside select controller")
     const ctx = canvas.getContext('2d');
 
     //iterate over the squares to check if the click is inside the inner circle
@@ -36,14 +37,14 @@ export function processClick(model, canvas, x, y){
             ctx.fillStyle = "red";
             ctx.fill();
             ctx.stroke();
-            ctx.closePath();
+            ctx.closePath(); 
 
             // Determine the coordinates of the square containing the circle
             const squareX = sq.column;
             const squareY = sq.row;
             const color = sq.color;
 
-            console.log("row "+ squareY +" column "+ squareX + " color "+color)
+            //console.log("row "+ squareY +" column "+ squareX + " color "+color)
 
             // Define the offsets for the neighboring squares
             const offsets = [
@@ -63,20 +64,61 @@ export function processClick(model, canvas, x, y){
 
                 if (neighbor) {
                     groupArr.push(neighbor)
-
+                    /* 
                     // Update the border color of the neighboring square
                     ctx.strokeStyle = 'red';
                     ctx.lineWidth = 2;
                     ctx.rect(100 + neighbor.column * 80, 200 + neighbor.row * 80, 80, 80);
-                    ctx.stroke();
+                    ctx.stroke(); */
+                    colorSquareBorder(ctx, neighbor, 'red');
                 }
             }
-            //console.log(groupArr);
-            //rotateHandler(model, groupArr);
-            return groupArr
+            //colorCircle(ctx, sq, 'red');
+            let newGrpArr = removeColor(groupArr)
+            return newGrpArr
         }
     }
 }
+
+function colorSquareBorder(ctx, square, color) {
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.rect(100 + square.column * 80, 200 + square.row * 80, 80, 80);
+    ctx.stroke();
+}
+
+function colorCircle(ctx, square, color) {
+    ctx.beginPath();
+    ctx.arc(100 + square.column * 80, 200 + square.row * 80, 8, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+    ctx.stroke();
+    ctx.closePath();
+}
+
+function removeColor(groupArr){
+
+    let firstColor = groupArr[0].color
+    let flag = false;
+    for(let i = 1; i < groupArr.length; i++){
+        if(firstColor != groupArr[i].color){
+            flag = false;
+            return groupArr
+        }else{
+            flag = true;
+        }
+    }
+    if(flag == true){
+        for(let i = 0; i < groupArr.length; i++){
+            groupArr[i].color = ''
+        }
+        return groupArr;
+    }
+}
+
+// get the circle and draw the red
+// currently everything in the processClick. Separate it.
+function selectGroup(){}
 
 // Function to reset a circle and its associated group to their original state
 function resetCircleAndGroup(circle,model,canvas){

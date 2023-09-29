@@ -1,7 +1,7 @@
 // 1. Upper left 2. Bottom left 3. Bottom right 4. Upper right
 export default function counterClockController(grpArr){
 
-    console.log(JSON.stringify(grpArr));
+    //console.log(JSON.stringify(grpArr));
   
     //Shift colors to the right (because how the squares are arranged in the array)
     let lastColor = grpArr[grpArr.length-1].color

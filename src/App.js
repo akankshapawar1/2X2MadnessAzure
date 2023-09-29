@@ -3,20 +3,11 @@ import { layout } from './Layout.js';
 import React from 'react';
 import redrawCanvas from './boundary/Boundary';
 import Model from './model/Model.js';
-import {processClick}  from './controller/SelectController.js';
+import { processClick }  from './controller/SelectController.js';
 import { resetHandler } from './controller/ResetController';
 import counterClockController from './controller/CounterClockController';
 import clockController from './controller/ClockController';
 
-/* 
-1. How to display a blank board at the start - Later, is this necessary? - No
-2. How to pass configurations selected by the user? setModel? - First - Done
-3. How to select a group? - Second - 
-   i. Red outline - Done
-   ii. Select only one group at a time. If clicked on another, clear previous. - Done
-   iii. The red borders get drawn over the circles. Fix it.
-4. Reset - We need to pass indication of which config was selected to the controller? Or we can use currentState?
- */
 function App() {
 
   // initial instantiation of the model
@@ -43,10 +34,14 @@ function App() {
     let y = e.clientY - canvasRect.top;
     console.log("x: " + x, " y: " + y);
 
-    // calls function in controller class
+    //processClick(model, canvasRef.current, x, y);
     grpArr = processClick(model, canvasRef.current, x, y);
+    
+    console.log("grpArr:", grpArr, "Type:", typeof grpArr);
 
-    setSelectedGroups(grpArr)
+    // when 'setSelectedGroups(grpArr)' here, the first circle had to be clicked twice to get selected
+    //setSelectedGroups(grpArr)
+    //forceRedraw(redraw+1)
   }
 
   const resetClick = (e) => {
@@ -56,12 +51,16 @@ function App() {
   const callCounter = () =>{
     if(grpArr){
     counterClockController(grpArr)
+    console.log("CounterClockwise")
+    model.updateMoveCount(+1);
     setSelectedGroups([...grpArr])}
   }
 
   const callClock = () =>{
     if(grpArr){
     clockController(grpArr)
+    console.log("Clockwise")
+    model.updateMoveCount(+1);
     setSelectedGroups([...grpArr])}
   }
 
@@ -75,7 +74,7 @@ function App() {
           onClick = {handleClick}
         />
         <div style={layout.button}>
-        <label style={layout.text}>Number of moves: </label>
+        <label style={layout.text}>{"Number of moves: "+model.numMoves}</label>
           <button style={layout.anti} onClick={callCounter}>Counter</button>
           <button style={layout.clock} onClick={callClock}>Clock</button>
           <button style={layout.reset} onClick={resetClick}>Reset</button>
