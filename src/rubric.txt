@@ -16,3 +16,6 @@ Done            5 Player can select Lower right corner 2x2 group and rotate this
 
 CHECK ECHO360 
 Sep 24 - Debugging and testing tutorial
+
+
+Remove colors does not work
