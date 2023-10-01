@@ -1,127 +1,101 @@
-import rotateHandler from "./CounterClockController";
-//import removeColor from "./RemoveGroupController";
+// If the group has no colors - 1. It should not turn red - Not done
+//                              2. It should not be rotated - Done
+
+/*
+if we want to find the 4 squares around the circle
+row and column = square is the bottom left
+we need to find upper right, upper left, bottom right
+how to do that?
+upper right = row-1, column-1
+upper left = row-1, column
+bottom right = row, column-1
+*/
+
+
 
 let selectedCircle = null; // Track the currently selected circle
-const groupArr = [] 
+let groupArr = [];
 
-export function processClick(model, canvas, x, y){
-    //console.log("Inside select controller")
+const CIRCLE_RADIUS = 8;
+const OFFSETS = [
+    { dx: -1, dy: -1 },  // upper right
+    { dx: -1, dy: 0 },   // upper left
+    { dx: 0, dy: 0 },   // bottom left
+    { dx: 0, dy: -1 },  // bottom right
+];
+
+export function processClick(model, canvas, x, y, setSelectedGroups) {
     const ctx = canvas.getContext('2d');
 
-    //iterate over the squares to check if the click is inside the inner circle
-    for (let i = 0; i < model.board.squares.length ; i++){
-        const sq = model.board.squares[i]
-
-        // Calculate the coordinates of the center of the inner circle
-        const circleX = 100 + sq.column * 80; 
+    for (let sq of model.board.squares) {
+        const circleX = 100 + sq.column * 80;
         const circleY = 200 + sq.row * 80;
+        const distance = getDistance(x, y, circleX, circleY);
 
-        // Calculate the distance from the click to the center of the circle
-        const distance = Math.sqrt((x - circleX) ** 2 + (y - circleY) ** 2);
-
-        // If the distance is less than the circle's radius, it means the click is inside the circle
-        if (distance < 8) {
-
-            // Check if a circle was previously selected
+        if (distance < CIRCLE_RADIUS) {
             if (selectedCircle) {
-                // Reset the previously selected circle and its associated group to their original state
                 resetCircleAndGroup(selectedCircle, model, canvas);
             }
 
-            // Set the newly selected circle
             selectedCircle = sq;
 
-            // Change the circle color to red
-            ctx.beginPath();
-            ctx.arc(circleX, circleY, 8, 0, 2 * Math.PI);
-            ctx.fillStyle = "red";
-            ctx.fill();
-            ctx.stroke();
-            ctx.closePath(); 
-
-            // Determine the coordinates of the square containing the circle
-            const squareX = sq.column;
-            const squareY = sq.row;
-            const color = sq.color;
-
-            //console.log("row "+ squareY +" column "+ squareX + " color "+color)
-
-            // Define the offsets for the neighboring squares
-            const offsets = [
-            { dx: -1, dy: -1 },  // upper right
-            { dx: -1, dy: 0 },   // upper left
-            { dx: 0, dy: 0 },   // bottom left
-            { dx: 0, dy: -1 },  // bottom right
-            ];
-            
-            for (const offset of offsets) {
-                const neighborX = squareX + offset.dx;
-                const neighborY = squareY + offset.dy;
-                const neighborColor = sq.color;
-
-                // Find the neighboring square in the model (neighbor contains row, column, color)
-                const neighbor = model.board.squares.find(sq => sq.column === neighborX && sq.row === neighborY);
-
-                if (neighbor) {
-                    groupArr.push(neighbor)
-                    /* 
-                    // Update the border color of the neighboring square
-                    ctx.strokeStyle = 'red';
-                    ctx.lineWidth = 2;
-                    ctx.rect(100 + neighbor.column * 80, 200 + neighbor.row * 80, 80, 80);
-                    ctx.stroke(); */
-                    colorSquareBorder(ctx, neighbor, 'red');
-                }
+            groupArr = handleCircleClick(model, ctx, sq);
+        
+            if (!areAllSquresEmpty(groupArr)) {
+                console.log("Group not empty")
+                //console.log(groupArr)
+                const newGrpArr = removeColor(groupArr, setSelectedGroups);
+                //setSelectedGroups(newGrpArr)
+                return newGrpArr;
             }
-            //colorCircle(ctx, sq, 'red');
-            let newGrpArr = removeColor(groupArr)
-            return newGrpArr
+            break;  // Exit loop if a circle has been processed.
         }
     }
 }
 
-function colorSquareBorder(ctx, square, color) {
-    ctx.strokeStyle = color;
-    ctx.lineWidth = 2;
-    ctx.rect(100 + square.column * 80, 200 + square.row * 80, 80, 80);
-    ctx.stroke();
+function handleCircleClick(model, ctx, sq) {
+    // Highlight the circle
+    drawCircle(ctx, sq, "red");
+
+    // Highlight the neighboring squares
+    for (const offset of OFFSETS) {
+        const neighbor = getNeighbor(model, sq, offset);
+        if (neighbor) {
+            groupArr.push(neighbor);
+            drawRectangle(ctx, neighbor, 'red');
+        }
+    }
+    return groupArr;
 }
 
-function colorCircle(ctx, square, color) {
+function getNeighbor(model, square, offset) {
+    const neighborX = square.column + offset.dx;
+    const neighborY = square.row + offset.dy;
+    return model.board.squares.find(sq => sq.column === neighborX && sq.row === neighborY);
+}
+
+function drawCircle(ctx, sq, color) {
     ctx.beginPath();
-    ctx.arc(100 + square.column * 80, 200 + square.row * 80, 8, 0, 2 * Math.PI);
+    ctx.arc(100 + sq.column * 80, 200 + sq.row * 80, CIRCLE_RADIUS, 0, 2 * Math.PI);
     ctx.fillStyle = color;
     ctx.fill();
     ctx.stroke();
     ctx.closePath();
 }
 
-function removeColor(groupArr){
-
-    let firstColor = groupArr[0].color
-    let flag = false;
-    for(let i = 1; i < groupArr.length; i++){
-        if(firstColor != groupArr[i].color){
-            flag = false;
-            return groupArr
-        }else{
-            flag = true;
-        }
-    }
-    if(flag == true){
-        for(let i = 0; i < groupArr.length; i++){
-            groupArr[i].color = ''
-        }
-        return groupArr;
-    }
+function drawRectangle(ctx, sq, color) {
+    console.log("borders")
+    ctx.strokeStyle = color;
+    ctx.lineWidth = 2;
+    ctx.rect(100 + sq.column * 80, 200 + sq.row * 80, 80, 80);
+    ctx.stroke();
 }
 
-// get the circle and draw the red
-// currently everything in the processClick. Separate it.
-function selectGroup(){}
+function getDistance(x1, y1, x2, y2) {
+    return Math.sqrt((x1 - x2) ** 2 + (y1 - y2) ** 2);
+}
 
-// Function to reset a circle and its associated group to their original state
-function resetCircleAndGroup(circle,model,canvas){
+function resetCircleAndGroup(circle, model, canvas) {
     const ctx = canvas.getContext('2d');
     const squareX = circle.column;
     const squareY = circle.row;
@@ -164,7 +138,7 @@ function resetCircleAndGroup(circle,model,canvas){
                 ctx.closePath();
             }
             i++;
-    }
+        }
 
     }
 
@@ -173,12 +147,25 @@ function resetCircleAndGroup(circle,model,canvas){
     groupArr.length=0;
 }
 
-/*
-if we want to find the 4 squares around the circle
-row and column = square is the bottom left
-we need to find upper right, upper left, bottom right
-how to do that?
-upper right = row-1, column-1
-upper left = row-1, column
-bottom right = row, column-1
-*/
+function removeColor(groupArr, setSelectedGroups) {
+    const firstColor = groupArr[0].color;
+
+    const allSameColor = groupArr.every(item => item.color === firstColor);
+
+    if (allSameColor) {
+        groupArr.forEach(item => item.color = '');
+        console.log(typeof setSelectedGroups);
+        setSelectedGroups([...groupArr]);
+    }
+    return groupArr;
+}
+
+
+function areAllSquresEmpty(groupArr) {
+    for (let i = 1; i < groupArr.length; i++) {
+        if (groupArr[i].color !== '') {
+            return false;
+        }
+    }
+    return true;
+}

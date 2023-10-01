@@ -1,5 +1,5 @@
 // 1. Upper left 2. Bottom left 3. Bottom right 4. Upper right
-export default function counterClockController(grpArr){
+export default function counterClockController(grpArr,setSelectedGroups){
 
     //console.log(JSON.stringify(grpArr));
   
@@ -11,4 +11,5 @@ export default function counterClockController(grpArr){
     }
   
     grpArr[0].color = lastColor;
+    setSelectedGroups([...grpArr])
 } 

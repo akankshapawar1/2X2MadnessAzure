@@ -32,6 +32,10 @@ export default class Model{
         this.numMoves += delta; 
     }
 
+    resetMoveCount(){
+        this.numMoves = 0;
+    }
+
     /*
     load_4(){
         console.log("4")

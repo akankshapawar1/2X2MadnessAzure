@@ -1,6 +1,6 @@
 import './App.css';
 import { layout } from './Layout.js';
-import React from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import redrawCanvas from './boundary/Boundary';
 import Model from './model/Model.js';
 import { processClick }  from './controller/SelectController.js';
@@ -10,18 +10,16 @@ import clockController from './controller/ClockController';
 
 function App() {
 
-  // initial instantiation of the model
-  const [model, setModel] = React.useState(new Model(0));
-  const [redraw, forceRedraw] = React.useState(0);
-  const [selectedGroups, setSelectedGroups] = React.useState([]);
-
-  const appRef = React.useRef(null);
-  const canvasRef = React.useRef(null);
+  const [model, setModel] = useState(new Model(0));
+  const [redraw, forceRedraw] = useState(0);
+  const [selectedGroups, setSelectedGroups] = useState([]);
+  const appRef = useRef(null);
+  const canvasRef = useRef(null);
 
   let grpArr
 
   // ensures initial rendering is performed, and that whenever model changes, it is re-rendered
-  React.useEffect(() => {
+  useEffect(() => {
     redrawCanvas(model, canvasRef.current, appRef.current)
   },[model, redraw, selectedGroups])// 2nd arg tells when to refresh
   
@@ -34,34 +32,38 @@ function App() {
     let y = e.clientY - canvasRect.top;
     console.log("x: " + x, " y: " + y);
 
-    //processClick(model, canvasRef.current, x, y);
-    grpArr = processClick(model, canvasRef.current, x, y);
-    
-    console.log("grpArr:", grpArr, "Type:", typeof grpArr);
 
-    // when 'setSelectedGroups(grpArr)' here, the first circle had to be clicked twice to get selected
-    //setSelectedGroups(grpArr)
-    //forceRedraw(redraw+1)
+    grpArr = processClick(model, canvasRef.current, x, y, setSelectedGroups);
+    
+    //console.log(JSON.stringify(selectedGroups))
   }
 
   const resetClick = (e) => {
-    resetHandler(model, canvasRef.current, appRef.current);
+    resetHandler(model, canvasRef.current, appRef.current, setModel);
   }
 
   const callCounter = () =>{
-    if(grpArr){
-    counterClockController(grpArr)
-    console.log("CounterClockwise")
-    model.updateMoveCount(+1);
-    setSelectedGroups([...grpArr])}
+    //const ngrpArr = selectedGroups
+    //if(ngrpArr){
+      if(grpArr){
+      counterClockController(grpArr, setSelectedGroups)
+      console.log("CounterClockwise ")
+      console.log(JSON.stringify(grpArr))
+      model.updateMoveCount(+1);
+      //forceRedraw(redraw+1)
+      //setSelectedGroups([...grpArr])
+    }
   }
 
   const callClock = () =>{
     if(grpArr){
-    clockController(grpArr)
-    console.log("Clockwise")
-    model.updateMoveCount(+1);
-    setSelectedGroups([...grpArr])}
+      clockController(grpArr, setSelectedGroups)
+      console.log("Clockwise ")
+      console.log(JSON.stringify(grpArr))
+      model.updateMoveCount(+1);
+      //forceRedraw(redraw+1)
+      //setSelectedGroups([...grpArr])
+    }
   }
 
   return (
