@@ -24,7 +24,8 @@ const OFFSETS = [
     { dx: 0, dy: -1 },  // bottom right
 ];
 
-export function processClick(model, canvas, x, y, setSelectedGroups) {
+//export function processClick(model, canvas, x, y, setSelectedGroups) {
+export function processClick(model, canvas, x, y, forceRedraw) {
     const ctx = canvas.getContext('2d');
 
     for (let sq of model.board.squares) {
@@ -42,10 +43,8 @@ export function processClick(model, canvas, x, y, setSelectedGroups) {
             groupArr = handleCircleClick(model, ctx, sq);
         
             if (!areAllSquresEmpty(groupArr)) {
-                console.log("Group not empty")
-                //console.log(groupArr)
-                const newGrpArr = removeColor(groupArr, setSelectedGroups);
-                //setSelectedGroups(newGrpArr)
+                //const newGrpArr = removeColor(groupArr, setSelectedGroups, model);
+                const newGrpArr = removeColor(groupArr, forceRedraw, model);
                 return newGrpArr;
             }
             break;  // Exit loop if a circle has been processed.
@@ -55,7 +54,7 @@ export function processClick(model, canvas, x, y, setSelectedGroups) {
 
 function handleCircleClick(model, ctx, sq) {
     // Highlight the circle
-    drawCircle(ctx, sq, "red");
+    drawCircle(ctx, sq, 'red');
 
     // Highlight the neighboring squares
     for (const offset of OFFSETS) {
@@ -84,7 +83,7 @@ function drawCircle(ctx, sq, color) {
 }
 
 function drawRectangle(ctx, sq, color) {
-    console.log("borders")
+    //console.log("borders")
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
     ctx.rect(100 + sq.column * 80, 200 + sq.row * 80, 80, 80);
@@ -132,7 +131,7 @@ function resetCircleAndGroup(circle, model, canvas) {
             if(sq.column * 80 !== 0 && sq.row * 80 !== 0){
                 ctx.beginPath();
                 ctx.arc(100+sq.column * 80, 200+sq.row * 80, 8, 0, 2 * Math.PI);
-                ctx.fillStyle = "white"
+                ctx.fillStyle = 'white'
                 ctx.fill();
                 ctx.stroke();
                 ctx.closePath();
@@ -147,23 +146,28 @@ function resetCircleAndGroup(circle, model, canvas) {
     groupArr.length=0;
 }
 
-function removeColor(groupArr, setSelectedGroups) {
+//function removeColor(groupArr, setSelectedGroups, model) {
+function removeColor(groupArr, forceRedraw, model) {
     const firstColor = groupArr[0].color;
 
     const allSameColor = groupArr.every(item => item.color === firstColor);
 
     if (allSameColor) {
-        groupArr.forEach(item => item.color = '');
-        console.log(typeof setSelectedGroups);
-        setSelectedGroups([...groupArr]);
+        //groupArr.forEach(item => item.color = '');
+        groupArr.forEach(item => item.color = 'white');
+        //console.log(typeof setSelectedGroups);
+        model.updateMoveCount(+1);
+        //setSelectedGroups([...groupArr]);
+        forceRedraw(+1);
     }
     return groupArr;
 }
 
 
 function areAllSquresEmpty(groupArr) {
-    for (let i = 1; i < groupArr.length; i++) {
-        if (groupArr[i].color !== '') {
+    for (let i = 0; i < groupArr.length; i++) {
+        //if (groupArr[i].color !== '') {
+        if (groupArr[i].color !== 'white') {
             return false;
         }
     }

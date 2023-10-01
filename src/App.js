@@ -11,8 +11,9 @@ import clockController from './controller/ClockController';
 function App() {
 
   const [model, setModel] = useState(new Model(0));
+  //const [selectedGroups, setSelectedGroups] = useState([]);
   const [redraw, forceRedraw] = useState(0);
-  const [selectedGroups, setSelectedGroups] = useState([]);
+  const [boardCleared, setBoardCleared] = useState(false);
   const appRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -21,7 +22,7 @@ function App() {
   // ensures initial rendering is performed, and that whenever model changes, it is re-rendered
   useEffect(() => {
     redrawCanvas(model, canvasRef.current, appRef.current)
-  },[model, redraw, selectedGroups])// 2nd arg tells when to refresh
+  },[model, redraw])// 2nd arg tells when to refresh
   
 
   const handleClick = (e) =>{
@@ -30,40 +31,45 @@ function App() {
     // normalizing RAW point into localized canvas coordinates.
     let x = e.clientX - canvasRect.left;
     let y = e.clientY - canvasRect.top;
-    console.log("x: " + x, " y: " + y);
+    //console.log("x: " + x, " y: " + y);
 
 
-    grpArr = processClick(model, canvasRef.current, x, y, setSelectedGroups);
-    
+    //grpArr = processClick(model, canvasRef.current, x, y, setSelectedGroups);
+    grpArr = processClick(model, canvasRef.current, x, y, forceRedraw);
+
     //console.log(JSON.stringify(selectedGroups))
   }
 
-  const resetClick = (e) => {
-    resetHandler(model, canvasRef.current, appRef.current, setModel);
+  const resetClick = () => {
+    resetHandler(model, setModel);
   }
 
   const callCounter = () =>{
-    //const ngrpArr = selectedGroups
-    //if(ngrpArr){
       if(grpArr){
-      counterClockController(grpArr, setSelectedGroups)
+      counterClockController(grpArr)
       console.log("CounterClockwise ")
-      console.log(JSON.stringify(grpArr))
+      //console.log(JSON.stringify(grpArr))
+      forceRedraw(redraw+1);
       model.updateMoveCount(+1);
-      //forceRedraw(redraw+1)
-      //setSelectedGroups([...grpArr])
     }
   }
 
   const callClock = () =>{
     if(grpArr){
-      clockController(grpArr, setSelectedGroups)
+      clockController(grpArr)
       console.log("Clockwise ")
-      console.log(JSON.stringify(grpArr))
+      //console.log(JSON.stringify(grpArr))
+      forceRedraw(redraw+1);
       model.updateMoveCount(+1);
-      //forceRedraw(redraw+1)
-      //setSelectedGroups([...grpArr])
     }
+  }
+
+  function isBoardCleared(squares) {
+    return squares.every(square => square.color === 'white'); 
+  }
+
+  if (isBoardCleared(model.board.squares)) {
+    setBoardCleared(true);
   }
 
   return (
@@ -84,6 +90,7 @@ function App() {
           <button style={layout.one} onClick={() => setModel(new Model(0))}>4X4</button>
           <button style={layout.two} onClick={() => setModel(new Model(1))}>5X5</button>
           <button style={layout.three} onClick={() => setModel(new Model(2))}>6X6</button>
+          {isBoardCleared(model.board.squares) && <div>Congratulations! You've cleared the board!</div>}
     </div>
     </main>
   );

@@ -8,11 +8,11 @@ Done            5 Player can remove Blue 2x2 group in the middle of right edge a
                 3 Make sure not possible to select any group (1 pt) and that the CW (1 pt) and CCW (1 pt) buttons do not affect MoveCount in any way
 Done            5 Reset and go back to initial state. Select one group. Reset AGAIN. Now confirm moveCount is reset to 0 and that no groups are selected
 Done            5 Choose 5x5 configuration and confirm it shows properly
-                5 Select lower-right corner and make Clockwise rotation. Confirm that "empty" square has moved into position (4,3); now eliminate YELLOW or GREEN since those are easiest to remove
+Done            5 Select lower-right corner and make Clockwise rotation. Confirm that "empty" square has moved into position (4,3); now eliminate YELLOW or GREEN since those are easiest to remove
 Done            5 Choose 6x6 configuration and confirm it shows properly
-                5 Eliminate dark blue squares on the 6x6 board in middle in 5 moves
+Done            5 Eliminate dark blue squares on the 6x6 board in middle in 5 moves
                 25 This is pro-rated percentage out of a maximum value of 80%
-65
+70
 
 CHECK ECHO360 
 Sep 24 - Debugging and testing tutorial
