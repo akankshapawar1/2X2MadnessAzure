@@ -4,15 +4,15 @@ Done            5 Player can select Upper RIGHT Corner 2x2 group, proper circle 
 Done            5 Rotate this group Clockwise and confirm colors move appropriately
 Done            5 Player can select Lower right corner 2x2 group and rotate this group counterClockwise
 Done            5 Player can remove Blue 2x2 group in the middle of right edge and observe no group is selected, and move count shows 3
-                5 Solve board in a total of 16 moves and validate some congratulation message appears somewhere
-                3 Make sure not possible to select any group (1 pt) and that the CW (1 pt) and CCW (1 pt) buttons do not affect MoveCount in any way
+Done            5 Solve board in a total of 16 moves and validate some congratulation message appears somewhere
+Done            3 Make sure not possible to select any group (1 pt) and that the CW (1 pt) and CCW (1 pt) buttons do not affect MoveCount in any way
 Done            5 Reset and go back to initial state. Select one group. Reset AGAIN. Now confirm moveCount is reset to 0 and that no groups are selected
 Done            5 Choose 5x5 configuration and confirm it shows properly
 Done            5 Select lower-right corner and make Clockwise rotation. Confirm that "empty" square has moved into position (4,3); now eliminate YELLOW or GREEN since those are easiest to remove
 Done            5 Choose 6x6 configuration and confirm it shows properly
 Done            5 Eliminate dark blue squares on the 6x6 board in middle in 5 moves
                 25 This is pro-rated percentage out of a maximum value of 80%
-70
+78
 
 CHECK ECHO360 
 Sep 24 - Debugging and testing tutorial

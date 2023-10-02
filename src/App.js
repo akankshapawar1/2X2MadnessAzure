@@ -18,6 +18,7 @@ function App() {
   const canvasRef = useRef(null);
 
   let grpArr
+  let flag = false;
 
   // ensures initial rendering is performed, and that whenever model changes, it is re-rendered
   useEffect(() => {
@@ -33,9 +34,8 @@ function App() {
     let y = e.clientY - canvasRect.top;
     //console.log("x: " + x, " y: " + y);
 
-
     //grpArr = processClick(model, canvasRef.current, x, y, setSelectedGroups);
-    grpArr = processClick(model, canvasRef.current, x, y, forceRedraw);
+    grpArr = processClick(model, canvasRef.current, x, y, forceRedraw, flag);
 
     //console.log(JSON.stringify(selectedGroups))
   }
@@ -65,12 +65,14 @@ function App() {
   }
 
   function isBoardCleared(squares) {
-    return squares.every(square => square.color === 'white'); 
+    flag = squares.every(square => square.color === 'white'); 
+    //return squares.every(square => square.color === 'white'); 
+    return flag;
   }
 
-  if (isBoardCleared(model.board.squares)) {
+  /* if (isBoardCleared(model.board.squares)) {
     setBoardCleared(true);
-  }
+  } */
 
   return (
       <main style={layout.Appmain} ref={appRef}>

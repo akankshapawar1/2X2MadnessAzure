@@ -11,8 +11,6 @@ upper left = row-1, column
 bottom right = row, column-1
 */
 
-
-
 let selectedCircle = null; // Track the currently selected circle
 let groupArr = [];
 
@@ -25,7 +23,8 @@ const OFFSETS = [
 ];
 
 //export function processClick(model, canvas, x, y, setSelectedGroups) {
-export function processClick(model, canvas, x, y, forceRedraw) {
+export function processClick(model, canvas, x, y, forceRedraw, flag) {
+    if(!flag){
     const ctx = canvas.getContext('2d');
 
     for (let sq of model.board.squares) {
@@ -50,6 +49,7 @@ export function processClick(model, canvas, x, y, forceRedraw) {
             break;  // Exit loop if a circle has been processed.
         }
     }
+}
 }
 
 function handleCircleClick(model, ctx, sq) {
