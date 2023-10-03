@@ -42,7 +42,6 @@ export function processClick(model, canvas, x, y, forceRedraw, flag) {
             groupArr = handleCircleClick(model, ctx, sq);
         
             if (!areAllSquresEmpty(groupArr)) {
-                //const newGrpArr = removeColor(groupArr, setSelectedGroups, model);
                 const newGrpArr = removeColor(groupArr, forceRedraw, model);
                 return newGrpArr;
             }
@@ -83,7 +82,6 @@ function drawCircle(ctx, sq, color) {
 }
 
 function drawRectangle(ctx, sq, color) {
-    //console.log("borders")
     ctx.strokeStyle = color;
     ctx.lineWidth = 2;
     ctx.rect(100 + sq.column * 80, 200 + sq.row * 80, 80, 80);

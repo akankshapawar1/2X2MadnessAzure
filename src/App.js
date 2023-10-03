@@ -11,9 +11,7 @@ import clockController from './controller/ClockController';
 function App() {
 
   const [model, setModel] = useState(new Model(0));
-  //const [selectedGroups, setSelectedGroups] = useState([]);
   const [redraw, forceRedraw] = useState(0);
-  const [boardCleared, setBoardCleared] = useState(false);
   const appRef = useRef(null);
   const canvasRef = useRef(null);
 
@@ -34,10 +32,8 @@ function App() {
     let y = e.clientY - canvasRect.top;
     //console.log("x: " + x, " y: " + y);
 
-    //grpArr = processClick(model, canvasRef.current, x, y, setSelectedGroups);
     grpArr = processClick(model, canvasRef.current, x, y, forceRedraw, flag);
 
-    //console.log(JSON.stringify(selectedGroups))
   }
 
   const resetClick = () => {
@@ -47,7 +43,7 @@ function App() {
   const callCounter = () =>{
       if(grpArr){
       counterClockController(grpArr)
-      console.log("CounterClockwise ")
+      //console.log("CounterClockwise ")
       //console.log(JSON.stringify(grpArr))
       forceRedraw(redraw+1);
       model.updateMoveCount(+1);
@@ -57,7 +53,7 @@ function App() {
   const callClock = () =>{
     if(grpArr){
       clockController(grpArr)
-      console.log("Clockwise ")
+      //console.log("Clockwise ")
       //console.log(JSON.stringify(grpArr))
       forceRedraw(redraw+1);
       model.updateMoveCount(+1);
@@ -66,13 +62,8 @@ function App() {
 
   function isBoardCleared(squares) {
     flag = squares.every(square => square.color === 'white'); 
-    //return squares.every(square => square.color === 'white'); 
     return flag;
   }
-
-  /* if (isBoardCleared(model.board.squares)) {
-    setBoardCleared(true);
-  } */
 
   return (
       <main style={layout.Appmain} ref={appRef}>
