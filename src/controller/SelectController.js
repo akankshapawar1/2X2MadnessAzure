@@ -162,7 +162,7 @@ function removeColor(groupArr, forceRedraw, model) {
 }
 
 
-function areAllSquresEmpty(groupArr) {
+export function areAllSquresEmpty(groupArr) {
     for (let i = 0; i < groupArr.length; i++) {
         //if (groupArr[i].color !== '') {
         if (groupArr[i].color !== 'white') {

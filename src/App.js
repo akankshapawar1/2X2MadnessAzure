@@ -27,6 +27,8 @@ function App() {
   const handleClick = (e) =>{
     const canvasRect = canvasRef.current.getBoundingClientRect();
 
+    console.log(e);
+
     // normalizing RAW point into localized canvas coordinates.
     let x = e.clientX - canvasRect.left;
     let y = e.clientY - canvasRect.top;
@@ -69,6 +71,7 @@ function App() {
       <main style={layout.Appmain} ref={appRef}>
         <canvas tabIndex="1"
           className="App-canvas"
+          data-testid="canvas"
           ref={canvasRef}
           width={layout.canvas.width}
           height={layout.canvas.height}
@@ -76,13 +79,13 @@ function App() {
         />
         <div style={layout.button}>
         <label style={layout.text}>{"Number of moves: "+model.numMoves}</label>
-          <button style={layout.anti} onClick={callCounter}>Counter</button>
-          <button style={layout.clock} onClick={callClock}>Clock</button>
-          <button style={layout.reset} onClick={resetClick}>Reset</button>
+          <button style={layout.anti} data-testid="button_counter" onClick={callCounter}>Counter</button>
+          <button style={layout.clock} data-testid="button_clock" onClick={callClock}>Clock</button>
+          <button style={layout.reset} data-testid="button_reset" onClick={resetClick}>Reset</button>
           <button style={layout.quit}>Quit</button>
-          <button style={layout.one} onClick={() => setModel(new Model(0))}>4X4</button>
-          <button style={layout.two} onClick={() => setModel(new Model(1))}>5X5</button>
-          <button style={layout.three} onClick={() => setModel(new Model(2))}>6X6</button>
+          <button style={layout.one} data-testid="button_4" onClick={() => setModel(new Model(0))}>4X4</button>
+          <button style={layout.two} data-testid="button_5" onClick={() => setModel(new Model(1))}>5X5</button>
+          <button style={layout.three} data-testid="button_6" onClick={() => setModel(new Model(2))}>6X6</button>
           {isBoardCleared(model.board.squares) && <div>Congratulations! You've cleared the board!</div>}
     </div>
     </main>

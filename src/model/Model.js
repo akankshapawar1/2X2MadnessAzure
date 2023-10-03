@@ -36,30 +36,6 @@ export default class Model{
         this.numMoves = 0;
     }
 
-    /*
-    load_4(){
-        console.log("4")
-        //this.flag=1
-        //this.configs = [config_4x4, config_5x5, config_6x6]
-        //this.currentConfig = 0;
-        this.board = new Board(this.configs[0])
-    }
-
-    load_5(){
-        console.log("5")
-        this.flag=1
-        this.configs = [config_4x4, config_5x5, config_6x6]
-        this.currentConfig = 1;
-        this.board = new Board(this.configs[this.currentConfig])
-    }
-
-    load_6(){
-        console.log("6")
-        this.flag=1
-        this.configs = [config_4x4, config_5x5, config_6x6]
-        this.currentConfig = 2;
-        this.board = new Board(this.configs[this.currentConfig])
-    }*/
 }
 
 export class Square{
@@ -67,19 +43,5 @@ export class Square{
         this.row = row;
         this.column = col;
         this.color = color;
-    }
-}
-
-export class Direction{
-    constructor(row, col){
-        this.r = row;
-        this.c = col;
-    }
-}
-
-export class Group{
-    constructor(xx, yy){
-        this.x = xx;
-        this.y = yy;
     }
 }
