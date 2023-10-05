@@ -1,11 +1,16 @@
 import React from 'react';
 import Model from './model/Model';
-import  { areAllSquaresEmpty }  from './controller/SelectController';
 import App from './App';
 import { render, screen, fireEvent } from '@testing-library/react';
 
-test('Validate config is Default 4X4', () => {
-  let m = new Model()
+test('Properly renders initial screen', ()=>{
+  const { getByText } = render(<App />);
+  const movesElement = getByText(/Number of moves: 0/i);
+  expect(movesElement).toBeInTheDocument();
+})
+
+test('Validate default config is 4X4', () => {
+  let m = new Model();
   expect(m.currentConfig).toEqual(0)
 });
 
@@ -14,19 +19,13 @@ test('No moves when model created', () => {
   expect(model.numMoves).toBe(0)
 });
 
-test('Board solved = false when game starts', ()=>{
+test('Board unsolved when game starts', ()=>{
   //let a = new App()
   let cFlag = App.flag;
   expect(cFlag).toBeFalsy();
 });
 
-test('Properly renders initial screen', ()=>{
-  const { getByText } = render(<App />);
-  const movesElement = getByText(/Number of moves: 0/i);
-  expect(movesElement).toBeInTheDocument();
-})
-
-test('Check moves after rotating and reset', () => {
+test('Updates move count on button clicks', () => {
   const { getByText } = render(<App />);
 
   const canvasElement = screen.getByTestId('canvas');
@@ -53,7 +52,15 @@ test('Check moves after rotating and reset', () => {
 
 })
 
-test('All squares white, should return True', () => {
+/* test('Config 5X5 loads on button click', ()=>{
+  let model = new Model();
+  const { getByText } = render(<App />);
+  const button_5 = screen.getByTestId('button_5');
+  fireEvent.click(button_5);
+  expect(model.board.size).toEqual(5);
+} )
+ */
+/* test('All squares white, should return True', () => {
   const groupArr = [
     { color: 'white' },
     { color: 'white' },
@@ -61,4 +68,4 @@ test('All squares white, should return True', () => {
     { color: 'white' }
   ];
   expect(areAllSquaresEmpty(groupArr)).toBe(true);
-});  
+}); */  

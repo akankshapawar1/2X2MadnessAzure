@@ -1,0 +1,11 @@
+Akanksha Pawar (adpawar@wpi.edu)
+
+I have verified all the test cases on the rubric and it all works.
+
+Here are some of my design decisions -
+1. Canvas - 700X700
+2. I added white square in the config so I my logic for drawing inner circles would work properly.
+3. After removing the colors, I am assigning the color white. I tried using null but I ran into some problems.
+4. I also made 2 separate controllers for Counter and Clockwise rotation. 
+
+Thank you!

@@ -12,8 +12,6 @@ export default function redrawCanvas(model, canvasObj, appObj){
     // Draw the board
     let i = 0;
 
-    //console.log("Model from boundary");
-    //console.log(JSON.stringify(model));
     //const colors = model.board.squares.map(square => square.color);
     //console.log(JSON.stringify(colors));
 

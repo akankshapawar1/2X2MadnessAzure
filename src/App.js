@@ -27,7 +27,7 @@ function App() {
   const handleClick = (e) =>{
     const canvasRect = canvasRef.current.getBoundingClientRect();
 
-    console.log(e);
+    //console.log(e);
 
     // normalizing RAW point into localized canvas coordinates.
     let x = e.clientX - canvasRect.left;
@@ -86,7 +86,7 @@ function App() {
           <button style={layout.one} data-testid="button_4" onClick={() => setModel(new Model(0))}>4X4</button>
           <button style={layout.two} data-testid="button_5" onClick={() => setModel(new Model(1))}>5X5</button>
           <button style={layout.three} data-testid="button_6" onClick={() => setModel(new Model(2))}>6X6</button>
-          {isBoardCleared(model.board.squares) && <div>Congratulations! You've cleared the board!</div>}
+          {isBoardCleared(model.board.squares) && <div style={{ color: 'red', fontSize: '24px' }}>Congratulations! You've cleared the board!</div>}
     </div>
     </main>
   );
