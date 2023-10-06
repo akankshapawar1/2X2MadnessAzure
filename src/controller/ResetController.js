@@ -3,6 +3,6 @@ import Model from "../model/Model";
 
 export function resetHandler(model, setModel){
     //console.log(typeof setModel);
-    model.resetMoveCount();
+    //model.resetMoveCount();
     setModel(new Model(model.currentConfig));
 }

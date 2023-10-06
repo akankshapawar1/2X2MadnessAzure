@@ -79,10 +79,9 @@ function App() {
         />
         <div style={layout.button}>
         <label style={layout.text}>{"Number of moves: "+model.numMoves}</label>
-          <button style={layout.anti} data-testid="button_counter" onClick={callCounter}>Counter</button>
-          <button style={layout.clock} data-testid="button_clock" onClick={callClock}>Clock</button>
+          <button style={layout.anti} data-testid="button_counter" onClick={callCounter}>Counter-Clock</button>
+          <button style={layout.clock} data-testid="button_clock" onClick={callClock}>Clockwise</button>
           <button style={layout.reset} data-testid="button_reset" onClick={resetClick}>Reset</button>
-          <button style={layout.quit}>Quit</button>
           <button style={layout.one} data-testid="button_4" onClick={() => setModel(new Model(0))}>4X4</button>
           <button style={layout.two} data-testid="button_5" onClick={() => setModel(new Model(1))}>5X5</button>
           <button style={layout.three} data-testid="button_6" onClick={() => setModel(new Model(2))}>6X6</button>

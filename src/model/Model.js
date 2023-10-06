@@ -32,9 +32,9 @@ export default class Model{
         this.numMoves += delta; 
     }
 
-    resetMoveCount(){
+    /* resetMoveCount(){
         this.numMoves = 0;
-    }
+    } */
 
 }
 
